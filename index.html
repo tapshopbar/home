@@ -181,6 +181,15 @@ footer{background:var(--navy);color:#fff;padding:56px var(--pad) 28px;margin-top
 .locs .lead{font-size:17px;line-height:1.5;color:#555;max-width:560px;padding:0 var(--pad) 32px;margin-top:-16px;word-break:keep-all}
 
 @media (max-width:600px){:root{--pad:20px}.hero h1{font-size:36px}.hero p{font-size:16px}.logo{height:18px}}
+.launch .acts{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.playbtn{display:inline-flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:16px;height:56px;padding:0 6px;border-bottom:2px solid rgba(255,255,255,.6)}
+.playbtn i{width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.playbtn i:after{content:"";border-left:11px solid var(--navy);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.film{position:fixed;inset:0;z-index:80;background:rgba(8,10,20,.92);display:grid;place-items:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.film.open{opacity:1;pointer-events:auto}
+.film .box{width:min(1100px,100%);aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden;position:relative}
+.film iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.film .fx{position:absolute;top:18px;right:22px;color:#fff;font-size:34px;line-height:1;width:44px;height:44px}
 </style>
 </head>
 <body>
@@ -243,7 +252,7 @@ footer{background:var(--navy);color:#fff;padding:56px var(--pad) 28px;margin-top
         <li>앱 결제 30% 할인 쿠폰<span>앱 설치 시 1회 · 2026.11.30까지 · Wallet 충전·보틀 구매 제외</span></li>
         <li>VIP는 매일 아메리카노 또는 와인 한 잔 무료<span>최근 30일 10만원 이상 결제 시 VIP · 결제 금액 10% 포인트 적립</span></li>
       </ul>
-      <a class="dl" href="#app" data-order>앱 다운로드</a>
+      <div class="acts"><a class="dl" href="#app" data-order>앱 다운로드</a><button class="playbtn" data-film><i></i>30초 영상 보기</button></div>
     </div>
     <div class="art"><img src="assets/app_qr.jpg" alt="탭 화면을 터치하는 손" style="object-position:78% 50%"></div>
   </section>
@@ -325,7 +334,7 @@ footer{background:var(--navy);color:#fff;padding:56px var(--pad) 28px;margin-top
     </div>
     <div>
       <h4>Socials</h4>
-      <ul><li><a href="https://www.instagram.com/tap.shop.bar/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://pf.kakao.com/_xjHlbxj" target="_blank" rel="noopener">KakaoTalk</a></li></ul>
+      <ul><li><a href="https://www.instagram.com/tap.shop.bar/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.youtube.com/@TSBKorea" target="_blank" rel="noopener">YouTube</a></li><li><a href="https://pf.kakao.com/_xjHlbxj" target="_blank" rel="noopener">KakaoTalk</a></li></ul>
     </div>
   </div>
   <div class="copy"><span>주식회사 탭샵바 · 대표이사 나기정 · 사업자등록번호 235-87-02963 · 통신판매업 신고번호 2024-서울종로-0271호<br>호스팅 서비스 Amazon Web Services · 고객센터 info@tsb.wine (10:00~18:00) · 카카오톡 채널 TAP SHOP BAR<br>All Rights Reserved. ©TAP SHOP BAR 2026. 음주는 만 19세 이상.</span><img src="assets/tsb_wordmark_h.png" alt=""></div>
@@ -439,6 +448,16 @@ pp.addEventListener("click", () => {
   if (duo.paused) { duo.play(); pp.innerHTML = '<svg viewBox="0 0 16 16"><rect x="3" y="2" width="3.4" height="12"/><rect x="9.6" y="2" width="3.4" height="12"/></svg>'; }
   else { duo.pause(); pp.innerHTML = '<svg viewBox="0 0 16 16"><path d="M4 2l10 6-10 6z"/></svg>'; }
 });
+</script>
+<div class="film" id="film" aria-hidden="true"><button class="fx" data-film-close aria-label="영상 닫기">×</button><div class="box" id="filmbox"></div></div>
+<script>
+(function(){const f=document.getElementById('film'),b=document.getElementById('filmbox');
+function open(){b.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/Z1jFS2eOSoM?autoplay=1&rel=0&playsinline=1" title="탭샵바 앱 런칭 영상" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';f.classList.add('open');f.setAttribute('aria-hidden','false');}
+function close(){f.classList.remove('open');f.setAttribute('aria-hidden','true');b.innerHTML='';}
+document.querySelectorAll('[data-film]').forEach(x=>x.addEventListener('click',e=>{e.preventDefault();open();}));
+f.addEventListener('click',e=>{if(e.target===f||e.target.hasAttribute('data-film-close'))close();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+if(location.hash==='#film')open();})();
 </script>
 </body>
 </html>
